@@ -201,7 +201,7 @@ void loadUsersFromFile(vector<Person>& users) {
 void saveUsersToFile(const vector<Person>& users) {
     ofstream file("users.txt");
     if (file.is_open()) {
-        for (const auto& user : users) {
+        for (auto user : users) {
             file << user.id << " " << user.name << " " << user.age << " " << user.deposit << " "
                  << user.address << " " << (user.gender == Gender::MALE ? 0 : 1) << " "
                  << user.account << " " << user.password << " " << user.usability << endl;
@@ -216,7 +216,7 @@ bool registerUser(vector<Person>& users) {
     cout << "Please enter a new username: ";
     cin >> newAccount;
 
-    for (const auto& user : users) {
+    for (auto user : users) {
         if (user.getaccount() == newAccount) {
             cout << "This username already exists. Please choose another one." << endl;
             return false;
