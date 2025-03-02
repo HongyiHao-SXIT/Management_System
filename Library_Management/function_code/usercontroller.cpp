@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "management_system.h"
 
 using namespace std;
 
@@ -234,7 +233,54 @@ bool login(vector<User>& users, string& input_username) {
     }
     return false;
 }
-int main() {
 
-    return 0;
+int menu() {
+    char choose;
+    do {
+        system("cls");
+        std::cout << "******************************************************" << std::endl;
+        std::cout << "------------------Welcome to Library------------------" << std::endl;
+        std::cout << "    *          【1】Add a new book                 *    " << std::endl;
+        std::cout << "    *          【2】Display all books              *    " << std::endl;
+        std::cout << "    *          【3】Search for a book              *    " << std::endl;
+        std::cout << "    *          【4】Borrow a book                  *    " << std::endl;
+        std::cout << "    *          【5】Return a book                  *    " << std::endl;
+        std::cout << "    *          【6】Delete a book                  *    " << std::endl;
+        std::cout << "    *          【7】Modify book information        *    " << std::endl;
+        std::cout << "    *          【8】Display borrowed books         *    " << std::endl;
+        std::cout << "    *          【0】Exit the library system        *    " << std::endl;
+        std::cout << "******************************************************" << std::endl;
+        std::cout << "Please select your operation (0 - 8):" << std::endl;
+        std::cin >> choose;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    } while (choose < '0' || choose > '8');
+    return (choose - '0');
+}
+
+void loadUsersFromFile(vector<User>& users) {
+    ifstream file("users.txt");
+    if (file.is_open()) {
+        string id, name, address, account, password;
+        int age, deposit;
+        int genderInt;
+        bool usability;
+        while (file >> id >> name >> age >> deposit >> address >> genderInt >> account >> password >> usability) {
+            Gender gender = (genderInt == 0) ? Gender::MALE : Gender::FEMALE;
+            users.emplace_back(id, name, age, deposit, address, gender, "", account, password);
+            users.back().usability = usability;
+        }
+        file.close();
+    }
+}
+
+void saveUsersToFile(const vector<User>& users) {
+    ofstream file("users.txt");
+    if (file.is_open()) {
+        for (auto user : users) {
+            file << user.id << " " << user.name << " " << user.age << " " << user.deposit << " "
+                 << user.address << " " << (user.gender == Gender::MALE ? 0 : 1) << " "
+                 << user.account << " " << user.password << " " << user.usability << endl;
+        }
+        file.close();
+    }
 }
