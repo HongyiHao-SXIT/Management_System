@@ -5,33 +5,53 @@
 #include <string>
 #include <limits>
 #include <stdlib.h>
-#include "User.h"
-#include "Book.h"
+#include "headfile/menu.h"
+#include "headfile/User.h"
+#include "headfile/Book.h"
 
 using namespace std;
+void registerUser(vector<User>& users);
+bool login(vector<User>& users, string& username);
+int menu();
+void addBook(vector<Book>& books);
+void displayAllBooks(const vector<Book>& books);
+void searchBook(const vector<Book>& books);
+void borrowBook(vector<Book>& books);
+void returnBook(vector<Book>& books);
+void deleteBook(vector<Book>& books);
+void modifyBook(vector<Book>& books);
+void displayBorrowedBooks(const vector<Book>& books);
 
 void loadUsersFromFile(vector<User>& users);
 void saveUsersToFile(const vector<User>& users);
 
-bool login(vector<User>& users, string& input_username);
-bool registerUser(vector<User>& users);
-
 int menu();
 
-
-int main() {    
+int main() {
     vector<User> users;
     vector<Book> books;
-    loadUsersFromFile(users);
 
     while (true) {
         cout << "Please select an option:" << endl;
         cout << "1. Register" << endl;
         cout << "2. Login" << endl;
         cout << "3. Exit" << endl;
+
         int option;
-        cin >> option;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        while (true) {
+            cin >> option;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Please enter a valid number: ";
+            } else if (option < 1 || option > 3) {
+                cout << "Invalid option. Please enter a number between 1 and 3: ";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            } else {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                break;
+            }
+        }
 
         if (option == 1) {
             registerUser(users);
@@ -72,7 +92,8 @@ int main() {
                                 cout << "Exiting the library system." << endl;
                                 break;
                         }
-                        system("pause");
+                        cout << "Press Enter to continue...";
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     } while (choice != 0);
                     break;
                 }
@@ -89,7 +110,11 @@ int main() {
                     }
                 }
             }
+        } else if (option == 3) {
+            cout << "Exiting the program." << endl;
+            break;
         }
     }
+
     return 0;
 }

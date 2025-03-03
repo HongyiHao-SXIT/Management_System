@@ -5,6 +5,7 @@
 #include <string>
 #include <limits>
 #include <stdlib.h>
+#include "Book.h"
 
 void addBook(vector<Book>& books) {
     Book newBook;
